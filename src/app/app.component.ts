@@ -8,6 +8,7 @@ import { Todo } from 'src/models/todo.model';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+  public mode = 'list';
   public todos: Todo[] = [];
   public title: String = 'Minhas Tarefas';
   public form: FormGroup;
@@ -20,11 +21,22 @@ export class AppComponent {
         Validators.maxLength(60),
         Validators.required
       ])]
-    })
+    });
 
-    this.todos.push(new Todo(1, 'Passear com o cachorro', false));
-    this.todos.push(new Todo(2, 'ir ao supermercado', false));
-    this.todos.push(new Todo(3, 'cortar o cabelo', true));
+    this.load();
+  }
+
+  add() {
+    const title = this.form.controls['title'].value;
+    const id = this.todos.length + 1;
+    this.todos.push(new Todo(id, title, false));
+    this.save();
+    this.clear();
+
+  }
+
+  clear() {
+    this.form.reset();
   }
 
   remove(todo: Todo) {
@@ -35,8 +47,25 @@ export class AppComponent {
   }
   markAsDone(todo: Todo) {
     todo.done = true;
+    this.save();
   }
   markAsUndone(todo: Todo) {
     todo.done = false;
+    this.save();
+  }
+
+  save() {
+    const data = JSON.stringify(this.todos)
+    localStorage.setItem('todos', data);
+    this.mode = 'list';
+  }
+
+  load() {
+
+    this.todos = JSON.parse(localStorage.getItem('todos') || '{}');
+  }
+
+  changeMode(mode: string) {
+    this.mode = mode;
   }
 }
