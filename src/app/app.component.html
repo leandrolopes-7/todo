@@ -11,7 +11,6 @@
 <div id="modal" *ngIf="mode=='add'" class="animated flipInX">
   <h1 class="text-center">Nova Tarefa</h1>
   <form [formGroup]="form">
-    <label>Tabela: </label>
     <input type="text" placeholder="Titulo da Tarefa" maxlength="60" formControlName="title">
     <small class="danger" *ngIf="form.controls.title.invalid && !form.controls.title.pristine">
       Este campo deve conter entre 3 e 60 caracteres<br>
