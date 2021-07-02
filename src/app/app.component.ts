@@ -43,6 +43,7 @@ export class AppComponent {
     const index = this.todos.indexOf(todo);
     if (index !== -1) {
       this.todos.splice(index, 1);
+      this.save();
     }
   }
   markAsDone(todo: Todo) {
@@ -61,8 +62,12 @@ export class AppComponent {
   }
 
   load() {
-
-    this.todos = JSON.parse(localStorage.getItem('todos') || '{}');
+    const data = localStorage.getItem('todos');
+    if(data){
+      this.todos = JSON.parse(data);
+    }else{
+      this.todos = [];
+    }
   }
 
   changeMode(mode: string) {
